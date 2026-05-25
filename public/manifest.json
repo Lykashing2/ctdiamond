@@ -1,0 +1,23 @@
+{
+  "name": "CT Diamond Jewelry",
+  "short_name": "CT Diamond",
+  "description": "Premium luxury jewelry store in Phnom Penh, Cambodia. Browse diamond, white gold, and Italian gold collections.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#b45309",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "dir": "ltr",
+  "categories": ["shopping", "lifestyle"],
+  "screenshots": [],
+  "prefer_related_applications": false,
+  "scope": "/",
+  "icons": [
+    { "src": "/images/logo.png", "sizes": "1080x1080", "type": "image/png", "purpose": "any" },
+    { "src": "/images/logo.png", "sizes": "1080x1080", "type": "image/png", "purpose": "maskable" },
+    { "src": "/images/logo.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/images/logo.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "splash_pages": null
+}
