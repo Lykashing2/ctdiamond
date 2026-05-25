@@ -25,7 +25,6 @@ export function getSupabaseClient(): SupabaseClient {
 }
 
 // Export a proxy that lazily initializes
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const supabase = new Proxy<SupabaseClient>({} as SupabaseClient, {
   get(_target, prop: string | symbol) {
     const client = getSupabaseClient();

@@ -1,5 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import './globals.css';
 
 const geistSans = Geist({
@@ -23,7 +25,13 @@ export const metadata: Metadata = {
   keywords: ['diamond', 'jewelry', 'gold', 'Phnom Penh', 'Cambodia', 'engagement ring', 'luxury'],
   authors: [{ name: 'CT Diamond Jewelry' }],
   metadataBase: new URL('https://ctdiamond.vercel.app'),
-  icons: { icon: '/images/logo.png', apple: '/images/logo.png' },
+  icons: {
+    icon: [
+      { url: '/images/logo.png', sizes: '32x32', type: 'image/png' },
+      { url: '/images/logo.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: '/images/logo.png',
+  },
   openGraph: {
     title: 'CT Diamond Jewelry',
     description: 'Timeless Luxury, Crafted for You. Premium jewelry in Phnom Penh.',
@@ -62,6 +70,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="flex-1">{children}</main>
           <Footer />
         </LanguageProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
