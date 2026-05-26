@@ -243,17 +243,19 @@ export default function AppointmentPage() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link href="/">
-                  <Button variant="outline" className="w-full sm:w-auto">
-                    <ArrowLeft size={16} className="mr-2" />
-                    {t('appointment.success.back_home')}
-                  </Button>
+            <Link
+              href="/"
+              className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-10 px-4 text-sm border border-amber-300 text-amber-700 hover:bg-amber-50 w-full sm:w-auto"
+            >
+              <ArrowLeft size={16} className="mr-2" />
+              {t('appointment.success.back_home')}
             </Link>
-            <Link href="/catalog">
-                <Button className="bg-amber-700 hover:bg-amber-800 text-white w-full sm:w-auto">
-                  {t('appointment.success.browse')}
-                  <ArrowRight size={16} className="ml-2" />
-                </Button>
+            <Link
+              href="/catalog"
+              className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-10 px-4 text-sm bg-amber-700 hover:bg-amber-800 text-white w-full sm:w-auto"
+            >
+              {t('appointment.success.browse')}
+              <ArrowRight size={16} className="ml-2" />
             </Link>
           </div>
         </div>

@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { Trash2, ShoppingBag, ArrowRight } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 import { useCartStore } from '@/lib/stores/cartStore';
-import { Button } from '@/components/ui/Button';
 import { formatUSD } from '@/lib/utils/pricing';
 
 export default function CartPage() {
@@ -17,8 +16,11 @@ export default function CartPage() {
         <ShoppingBag className="mx-auto text-gray-300 mb-4" size={48} />
         <h1 className="text-xl font-semibold text-gray-900 mb-2">{t('cart.title')}</h1>
         <p className="text-gray-500 mb-6">{t('cart.empty')}</p>
-        <Link href="/catalog">
-          <Button>{t('home.hero.cta')}</Button>
+        <Link
+          href="/catalog"
+          className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-10 px-4 text-sm bg-amber-600 text-white hover:bg-amber-700 shadow-sm"
+        >
+          {t('home.hero.cta')}
         </Link>
       </div>
     );
@@ -75,10 +77,13 @@ export default function CartPage() {
         </div>
       </div>
 
-      <Link href="/checkout" className="block mt-6">
-        <Button className="w-full" size="lg">
+      <Link
+        href="/checkout"
+        className="block mt-6"
+      >
+        <div className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:pointer-events-none disabled:opacity-50 h-12 px-6 text-base bg-amber-600 text-white hover:bg-amber-700 shadow-sm w-full">
           {t('cart.checkout')} <ArrowRight size={18} className="ml-2" />
-        </Button>
+        </div>
       </Link>
     </div>
   );

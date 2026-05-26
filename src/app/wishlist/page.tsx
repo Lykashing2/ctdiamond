@@ -26,8 +26,11 @@ export default function WishlistPage() {
           {t('wishlist.title') || 'My Wishlist'}
         </h1>
         <p className="text-gray-500 mb-6">Your wishlist is empty</p>
-        <Link href="/catalog">
-          <Button>{t('home.hero.cta') || 'Browse Catalog'}</Button>
+        <Link
+          href="/catalog"
+          className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-10 px-4 text-sm bg-amber-600 text-white hover:bg-amber-700 shadow-sm"
+        >
+          {t('home.hero.cta') || 'Browse Catalog'}
         </Link>
       </div>
     );

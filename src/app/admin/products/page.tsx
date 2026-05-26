@@ -32,10 +32,11 @@ export default function AdminProductsPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-xl font-bold text-gray-900">{t('admin.products')}</h1>
-        <Link href="/admin/products/new">
-          <Button size="sm">
-            <Plus size={16} className="mr-1" /> {t('admin.add_product')}
-          </Button>
+        <Link
+          href="/admin/products/new"
+          className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-8 px-3 text-xs bg-amber-600 text-white hover:bg-amber-700 shadow-sm"
+        >
+          <Plus size={16} className="mr-1" /> {t('admin.add_product')}
         </Link>
       </div>
 
@@ -92,10 +93,11 @@ export default function AdminProductsPage() {
                   </td>
                   <td className="p-3">
                     <div className="flex gap-1">
-                      <Link href={`/admin/products/${product.product_id}`}>
-                        <Button variant="ghost" size="sm">
-                          <Edit size={14} />
-                        </Button>
+                      <Link
+                        href={`/admin/products/${product.product_id}`}
+                        className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-8 px-3 text-xs text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                      >
+                        <Edit size={14} />
                       </Link>
                       <Button
                         variant="ghost"

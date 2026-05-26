@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Diamond, Sparkles, Shield, Book, HelpCircle, ChevronDown, Gem, Phone } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
-import { Button } from '@/components/ui/Button';
 
 const faqs = [
   {
@@ -251,10 +250,11 @@ export default function DiamondGuidePage() {
         <p className="text-gray-600 max-w-xl mx-auto mb-8">
           {t('learn.diamond.cta_desc')}
         </p>
-        <Link href="/appointment">
-          <Button size="lg" className="bg-amber-700 hover:bg-amber-800 text-white shadow-md">
-            {t('learn.diamond.cta_btn')}
-          </Button>
+        <Link
+          href="/appointment"
+          className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-12 px-6 text-base bg-amber-700 hover:bg-amber-800 text-white shadow-md"
+        >
+          {t('learn.diamond.cta_btn')}
         </Link>
       </section>
     </div>

@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Circle, Sparkles, Gem, Book, Heart, Phone, ChevronDown, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
-import { Button } from '@/components/ui/Button';
 
 export default function GoldTypesPage() {
   const { t } = useLanguage();
@@ -280,10 +279,11 @@ export default function GoldTypesPage() {
           {t('learn.gold.cta_desc')}
 
         </p>
-        <Link href="/appointment">
-          <Button size="lg" className="bg-amber-700 hover:bg-amber-800 text-white shadow-md">
-            {t('learn.gold.cta_btn')}
-          </Button>
+        <Link
+          href="/appointment"
+          className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-12 px-6 text-base bg-amber-700 hover:bg-amber-800 text-white shadow-md"
+        >
+          {t('learn.gold.cta_btn')}
         </Link>
       </section>
     </div>

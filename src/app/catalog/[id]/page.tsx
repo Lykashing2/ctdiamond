@@ -135,10 +135,11 @@ export default async function ProductDetailPage({ params }: PageProps) {
             </div>
 
             <div className="space-y-3 mb-8">
-              <Link href={`/appointment?product=${encodeURIComponent(product.name)}`}>
-                <Button variant="primary" size="lg" className="w-full">
-                  Book a Consultation
-                </Button>
+              <Link
+                href={`/appointment?product=${encodeURIComponent(product.name)}`}
+                className="flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 disabled:pointer-events-none disabled:opacity-50 h-12 px-6 text-base bg-amber-600 text-white hover:bg-amber-700 shadow-sm w-full"
+              >
+                Book a Consultation
               </Link>
               <ProductDetailClient productName={product.name} />
             </div>

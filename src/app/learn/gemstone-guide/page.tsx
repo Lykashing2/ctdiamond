@@ -1,10 +1,9 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Gem, Sparkles, Book, Heart, Diamond, Phone, ChevronDown, HelpCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
-import { Button } from '@/components/ui/Button';
 
 export default function GemstoneGuidePage() {
   const { t } = useLanguage();
@@ -294,10 +293,11 @@ export default function GemstoneGuidePage() {
         <p className="text-gray-600 max-w-xl mx-auto mb-8">
           {t('learn.gemstone.cta_desc')}
         </p>
-        <Link href="/appointment">
-          <Button size="lg" className="bg-amber-700 hover:bg-amber-800 text-white shadow-md">
-            {t('learn.gemstone.cta_btn')}
-          </Button>
+        <Link
+          href="/appointment"
+          className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-12 px-6 text-base bg-amber-700 hover:bg-amber-800 text-white shadow-md"
+        >
+          {t('learn.gemstone.cta_btn')}
         </Link>
       </section>
     </div>

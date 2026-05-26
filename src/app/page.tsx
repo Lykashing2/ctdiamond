@@ -7,7 +7,7 @@ import { useLanguage } from '@/lib/i18n/LanguageProvider';
 import { ProductCard } from '@/components/product/ProductCard';
 import { useProductStore } from '@/lib/stores/productStore';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/Button';
+
 
 const testimonials = [
   { name: 'Sophea C.', rating: 5, text: { en: 'Exceptional quality and service. They helped me find the perfect engagement ring.', km: 'គុណភាពនិងសេវាកម្មល្អឥតខ្ចោះ។ ពួកគេបានជួយខ្ញុំរកចិញ្ចៀនភ្ជាប់ពាក់ដ៏ល្អឥតខ្ចោះ។' } },
@@ -101,16 +101,18 @@ export default function HomePage() {
                 {t('home.hero.subtitle')}
               </p>
               <div className="flex flex-wrap gap-4">
-                <Link href="/catalog">
-                  <Button size="lg" className="bg-amber-600 hover:bg-amber-700 text-white shadow-lg">
-                    {t('home.hero.cta')}
-                    <ArrowRight size={18} className="ml-2" />
-                  </Button>
+                <Link
+                  href="/catalog"
+                  className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-12 px-6 text-base bg-amber-600 hover:bg-amber-700 text-white shadow-lg"
+                >
+                  {t('home.hero.cta')}
+                  <ArrowRight size={18} className="ml-2" />
                 </Link>
-                <Link href="/appointment">
-                  <Button size="lg" variant="outline" className="border-white/40 text-white hover:bg-white/10">
-                    {t('home.hero.cta2')}
-                  </Button>
+                <Link
+                  href="/appointment"
+                  className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-12 px-6 text-base border border-white/40 text-white hover:bg-white/10"
+                >
+                  {t('home.hero.cta2')}
                 </Link>
               </div>
             </div>
@@ -156,11 +158,12 @@ export default function HomePage() {
             <p className="text-gray-600 leading-relaxed mb-6">
               {t('home.about.body')}
             </p>
-            <Link href="/appointment">
-              <Button className="bg-amber-700 hover:bg-amber-800 text-white">
-                {t('home.about.cta')}
-                <ArrowRight size={16} className="ml-2" />
-              </Button>
+            <Link
+              href="/appointment"
+              className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 shadow-sm h-10 px-4 text-sm bg-amber-700 hover:bg-amber-800 text-white"
+            >
+              {t('home.about.cta')}
+              <ArrowRight size={16} className="ml-2" />
             </Link>
           </div>
         </div>
@@ -191,8 +194,11 @@ export default function HomePage() {
               <Gem className="mx-auto text-gray-300 mb-4" size={64} />
               <p className="text-gray-500 text-lg mb-2">{t('catalog.empty')}</p>
               <p className="text-gray-400 text-sm mb-6">{t('catalog.empty.desc')}</p>
-              <Link href="/appointment">
-                <Button variant="outline">{t('catalog.empty.cta')}</Button>
+              <Link
+                href="/appointment"
+                className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-10 px-4 text-sm border border-amber-300 text-amber-700 hover:bg-amber-50"
+              >
+                {t('catalog.empty.cta')}
               </Link>
             </div>
           ) : (

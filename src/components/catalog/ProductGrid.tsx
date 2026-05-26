@@ -49,10 +49,11 @@ export function ProductGrid({ products, total }: ProductGridProps) {
         <p className="text-gray-500 text-sm mb-6 max-w-md mx-auto">
           Book a free in-store consultation to see our full range of diamond and gold jewelry.
         </p>
-        <Link href="/appointment">
-          <Button variant="outline" size="lg">
-            Book a Consultation
-          </Button>
+        <Link
+          href="/appointment"
+          className="inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-500 h-12 px-6 text-base border border-amber-300 text-amber-700 hover:bg-amber-50"
+        >
+          Book a Consultation
         </Link>
       </div>
     );
