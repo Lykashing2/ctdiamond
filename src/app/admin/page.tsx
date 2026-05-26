@@ -27,6 +27,9 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [goldRates, setGoldRates] = useState<GoldRate[]>([]);
   const [selectedGoldRate, setSelectedGoldRate] = useState<string>('');
+  const [appointmentsThisWeek, setAppointmentsThisWeek] = useState<any[]>([]);
+  const [recentOrders, setRecentOrders] = useState<any[]>([]);
+  const [weekChartData, setWeekChartData] = useState<{ date: string; count: number }[]>([]);
 
   useEffect(() => {
     async function loadStats() {
@@ -86,6 +89,43 @@ export default function AdminDashboard() {
         }
         return s;
       }, 0);
+
+      const sevenDaysAgo = new Date();
+      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+      const sevenDaysAgoStr = sevenDaysAgo.toISOString().split('T')[0];
+
+      const { data: weekAppointments } = await supabase
+        .from('appointments')
+        .select('*')
+        .gte('date', sevenDaysAgoStr)
+        .order('date', { ascending: true });
+
+      if (weekAppointments) {
+        setAppointmentsThisWeek(weekAppointments);
+        const dayMap = new Map<string, number>();
+        for (let i = 6; i >= 0; i--) {
+          const d = new Date();
+          d.setDate(d.getDate() - i);
+          dayMap.set(d.toISOString().split('T')[0], 0);
+        }
+        for (const apt of weekAppointments) {
+          const key = apt.date?.split('T')[0];
+          if (key && dayMap.has(key)) {
+            dayMap.set(key, (dayMap.get(key) || 0) + 1);
+          }
+        }
+        setWeekChartData(Array.from(dayMap.entries()).map(([date, count]) => ({ date, count })));
+      }
+
+      const { data: recentOrdersData } = await supabase
+        .from('orders')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(5);
+
+      if (recentOrdersData) {
+        setRecentOrders(recentOrdersData);
+      }
 
       setStats({
         products: productsRes.count || 0,
@@ -303,6 +343,93 @@ export default function AdminDashboard() {
           </div>
         </div>
       )}
+
+      {/* Appointments This Week & Recent Orders */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-1.5">
+            <Calendar size={16} /> Appointments This Week
+          </h3>
+          <p className="text-2xl font-bold text-gray-900 mb-3">{appointmentsThisWeek.length}</p>
+          <div className="space-y-2">
+            {appointmentsThisWeek.slice(0, 10).map((apt) => (
+              <div key={apt.id} className="flex items-center justify-between py-1.5 border-b border-gray-50 last:border-0">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate">{apt.customer_name}</p>
+                  <p className="text-xs text-gray-400">{apt.date} {apt.time_slot}</p>
+                </div>
+                <span className={cn(
+                  'text-xs px-2 py-0.5 rounded-full font-medium shrink-0',
+                  apt.status === 'CONFIRMED' ? 'bg-green-50 text-green-600' :
+                  apt.status === 'PENDING' ? 'bg-amber-50 text-amber-600' :
+                  'bg-gray-50 text-gray-500'
+                )}>
+                  {apt.status}
+                </span>
+              </div>
+            ))}
+            {appointmentsThisWeek.length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-4">No appointments this week</p>
+            )}
+          </div>
+        </div>
+
+        <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-1.5">
+            <ShoppingBag size={16} /> Recent Orders
+          </h3>
+          <div className="space-y-2">
+            {recentOrders.map((order) => (
+              <div key={order.id} className="flex items-center justify-between py-1.5 border-b border-gray-50 last:border-0">
+                <div className="min-w-0">
+                  <p className="text-sm font-medium text-gray-900 truncate">{order.customer_name || order.id}</p>
+                  <p className="text-xs text-gray-400">{formatUSD(order.total_amount || 0)}</p>
+                </div>
+                <span className={cn(
+                  'text-xs px-2 py-0.5 rounded-full font-medium shrink-0',
+                  order.status === 'DELIVERED' ? 'bg-green-50 text-green-600' :
+                  order.status === 'SHIPPED' ? 'bg-blue-50 text-blue-600' :
+                  order.status === 'PROCESSING' ? 'bg-amber-50 text-amber-600' :
+                  order.status === 'PENDING' ? 'bg-gray-50 text-gray-600' :
+                  'bg-red-50 text-red-600'
+                )}>
+                  {order.status}
+                </span>
+              </div>
+            ))}
+            {recentOrders.length === 0 && (
+              <p className="text-sm text-gray-400 text-center py-4">No orders yet</p>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* 7-Day Overview Bar Chart */}
+      <div className="bg-white rounded-lg border border-gray-100 p-4 shadow-sm">
+        <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-1.5">
+          <BarChart3 size={16} /> 7-Day Overview
+        </h3>
+        <div className="flex items-end justify-between gap-2 h-40">
+          {weekChartData.map((day) => {
+            const maxCount = Math.max(...weekChartData.map((d) => d.count), 1);
+            const height = maxCount > 0 ? (day.count / maxCount) * 100 : 0;
+            return (
+              <div key={day.date} className="flex-1 flex flex-col items-center gap-1">
+                <span className="text-xs text-gray-500 font-medium">{day.count}</span>
+                <div className="w-full flex-1 flex justify-center items-end">
+                  <div
+                    className="w-3/4 bg-blue-500 rounded-t transition-all"
+                    style={{ height: `${Math.max(height, day.count > 0 ? 4 : 0)}%` }}
+                  />
+                </div>
+                <span className="text-xs text-gray-400">
+                  {new Date(day.date + 'T00:00:00').toLocaleDateString('en', { weekday: 'short' })}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 }

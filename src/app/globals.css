@@ -11,7 +11,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-serif: "Times New Roman", Times, serif;
-  --font-sans: var(--font-geist-sans);
+  --font-sans: var(--font-geist-sans), var(--font-noto-sans-khmer);
   --font-mono: var(--font-geist-mono);
 }
 

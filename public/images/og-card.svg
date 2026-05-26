@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#111827"/>
+      <stop offset="50%" style="stop-color:#1f2937"/>
+      <stop offset="100%" style="stop-color:#111827"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#fde68a"/>
+      <stop offset="30%" style="stop-color:#fbbf24"/>
+      <stop offset="60%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+    <linearGradient id="goldText" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fbbf24"/>
+      <stop offset="50%" style="stop-color:#fde68a"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="50%">
+      <stop offset="0%" style="stop-color:#f59e0b;stop-opacity:0.1"/>
+      <stop offset="100%" style="stop-color:#f59e0b;stop-opacity:0"/>
+    </radialGradient>
+    <filter id="sparkle">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="glowText">
+      <feGaussianBlur stdDeviation="1" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+
+  <!-- Radial glow -->
+  <rect width="1080" height="1080" fill="url(#glow)"/>
+
+  <!-- Decorative diamond shapes -->
+  <g opacity="0.04">
+    <polygon points="540,80 620,220 540,360 460,220" fill="#fbbf24"/>
+    <polygon points="200,150 250,220 200,290 150,220" fill="#fbbf24"/>
+    <polygon points="880,150 930,220 880,290 830,220" fill="#fbbf24"/>
+  </g>
+
+  <!-- Subtle geometric border -->
+  <g fill="none" stroke="#fbbf24" stroke-opacity="0.06">
+    <rect x="40" y="40" width="1000" height="1000" rx="20" stroke-width="1"/>
+    <rect x="60" y="60" width="960" height="960" rx="16" stroke-width="0.5"/>
+  </g>
+
+  <!-- Horizontal gold accent lines -->
+  <g opacity="0.1">
+    <line x1="200" y1="440" x2="880" y2="440" stroke="url(#gold)" stroke-width="1"/>
+    <line x1="300" y1="640" x2="780" y2="640" stroke="url(#gold)" stroke-width="1"/>
+  </g>
+
+  <!-- Diamond icon center -->
+  <g transform="translate(540, 480)" filter="url(#glowText)">
+    <!-- Diamond shape -->
+    <polygon points="0,-60 -35,-10 0,50 35,-10" fill="url(#gold)" opacity="0.3"/>
+    <polygon points="0,-45 -25,-10 0,35 25,-10" fill="url(#gold)" opacity="0.5"/>
+    <polygon points="0,-35 -18,-10 0,25 18,-10" fill="url(#goldText)" opacity="0.7"/>
+    <polygon points="0,-25 -12,-10 0,15 12,-10" fill="#fde68a" opacity="0.9"/>
+  </g>
+
+  <!-- Title -->
+  <text x="540" y="580" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="64" fill="url(#goldText)" font-weight="bold" letter-spacing="4">
+    CT DIAMOND
+  </text>
+  <text x="540" y="630" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="28" fill="#d4a853" font-weight="normal" letter-spacing="6">
+    JEWELRY
+  </text>
+
+  <!-- Tagline -->
+  <text x="540" y="700" text-anchor="middle" font-family="Georgia,'Times New Roman',serif" font-size="18" fill="#9ca3af" font-style="italic" letter-spacing="3">
+    Timeless Luxury, Crafted for You
+  </text>
+
+  <!-- Small decorative diamonds flanking tagline -->
+  <polygon points="380,697 388,705 380,713 372,705" fill="#f59e0b" opacity="0.3"/>
+  <polygon points="700,697 708,705 700,713 692,705" fill="#f59e0b" opacity="0.3"/>
+
+  <!-- Location -->
+  <text x="540" y="770" text-anchor="middle" font-family="Arial,Helvetica,sans-serif" font-size="14" fill="#6b7280" letter-spacing="2">
+    PHNOM PENH · CAMBODIA
+  </text>
+
+  <!-- Sparkles -->
+  <g filter="url(#sparkle)">
+    <circle cx="300" cy="350" r="2.5" fill="#fff" opacity="0.4"/>
+    <circle cx="780" cy="320" r="2" fill="#fff" opacity="0.3"/>
+    <circle cx="250" cy="600" r="1.5" fill="#fff" opacity="0.3"/>
+    <circle cx="830" cy="580" r="1.5" fill="#fff" opacity="0.3"/>
+    <circle cx="540" cy="830" r="1" fill="#fff" opacity="0.2"/>
+    <circle cx="400" cy="250" r="1" fill="#fff" opacity="0.25"/>
+    <circle cx="680" cy="260" r="1.5" fill="#fff" opacity="0.2"/>
+  </g>
+
+  <!-- Bottom decorative gold line -->
+  <g opacity="0.08">
+    <line x1="300" y1="880" x2="780" y2="880" stroke="url(#gold)" stroke-width="0.5"/>
+    <line x1="350" y1="890" x2="730" y2="890" stroke="url(#gold)" stroke-width="0.3"/>
+  </g>
+</svg>

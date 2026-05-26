@@ -36,8 +36,16 @@ export default function CartPage() {
               key={item.product.product_id}
               className="flex items-start gap-4 p-4 bg-white rounded-lg border border-gray-100"
             >
-              <div className="w-16 h-16 bg-gradient-to-br from-gray-50 to-amber-50 rounded flex items-center justify-center shrink-0">
-                <ShoppingBag className="text-amber-300" size={20} />
+              <div className="w-16 h-16 bg-gradient-to-br from-gray-50 to-amber-50 rounded flex items-center justify-center shrink-0 relative overflow-hidden">
+                {(item.product.image_phone || item.product.images?.[0]) ? (
+                  <img
+                    src={item.product.image_phone || item.product.images[0]}
+                    alt={title}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <ShoppingBag className="text-amber-300" size={20} />
+                )}
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-sm font-medium text-gray-900">{title}</h3>

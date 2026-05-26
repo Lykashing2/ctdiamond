@@ -5,6 +5,8 @@ import Image from 'next/image';
 import { X, Home, ShoppingBag, Calendar, HeadphonesIcon, User, Settings, Globe, Music, Phone, MessageCircle } from 'lucide-react';
 import { cn } from '@/lib/utils/cn';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
+import { useAdminStore } from '@/lib/stores/adminStore';
+import { useProductStore } from '@/lib/stores/productStore';
 
 interface DrawerMenuProps {
   open: boolean;
@@ -12,23 +14,25 @@ interface DrawerMenuProps {
 }
 
 const socialLinks = [
-  { icon: Globe, href: 'https://facebook.com', label: 'Facebook' },
-  { icon: Music, href: 'https://tiktok.com', label: 'TikTok' },
-  { icon: MessageCircle, href: 'https://instagram.com', label: 'Instagram' },
-];
-
-const menuItems = [
-  { href: '/', icon: Home, labelKey: 'nav.home' },
-  { href: '/catalog', icon: ShoppingBag, labelKey: 'nav.catalog' },
-  { href: '/appointment', icon: Calendar, labelKey: 'nav.appointments' },
-  { href: '/cart', icon: ShoppingBag, labelKey: 'nav.cart' },
-  { href: '/support', icon: HeadphonesIcon, labelKey: 'nav.support' },
-  { href: '/profile', icon: User, labelKey: 'nav.profile' },
-  { href: '/admin', icon: Settings, labelKey: 'nav.admin' },
+  { icon: Globe, href: 'https://facebook.com/ctdiamondjewelry', label: 'Facebook' },
+  { icon: Music, href: 'https://tiktok.com/@ctdiamondjewelry', label: 'TikTok' },
+  { icon: MessageCircle, href: 'https://instagram.com/ctdiamondjewelry', label: 'Instagram' },
 ];
 
 export function DrawerMenu({ open, onClose }: DrawerMenuProps) {
   const { t } = useLanguage();
+  const isAdmin = useAdminStore((s) => s.isAuthenticated);
+  const productCount = useProductStore((s) => s.products.length);
+
+  const menuItems = [
+    { href: '/', icon: Home, labelKey: 'nav.home' },
+    { href: '/catalog', icon: ShoppingBag, labelKey: 'nav.catalog' },
+    { href: '/appointment', icon: Calendar, labelKey: 'nav.appointments' },
+    ...(productCount > 0 ? [{ href: '/cart', icon: ShoppingBag, labelKey: 'nav.cart' }] : []),
+    { href: '/support', icon: HeadphonesIcon, labelKey: 'nav.support' },
+    { href: '/profile', icon: User, labelKey: 'nav.profile' },
+    ...(isAdmin ? [{ href: '/admin', icon: Settings, labelKey: 'nav.admin' }] : []),
+  ];
 
   return (
     <>

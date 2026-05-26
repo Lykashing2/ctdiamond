@@ -2,7 +2,7 @@ export type Language = 'en' | 'km';
 
 export interface BilingualField {
   en: string;
-  km: string;
+  km?: string;
 }
 
 export type StockStatus = 'AVAILABLE' | 'PENDING_PAYMENT' | 'SOLD';
@@ -36,6 +36,9 @@ export interface Product {
   title: BilingualField;
   description?: BilingualField;
   images: string[];
+  image_phone?: string;
+  image_tablet?: string;
+  image_desktop?: string;
   is_visible: boolean;
   stock_status: StockStatus;
   pricing: ProductPricing;

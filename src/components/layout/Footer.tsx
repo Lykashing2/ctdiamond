@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Phone, Clock } from 'lucide-react';
+import { MapPin, Phone, Clock, ExternalLink, Globe, Music, MessageCircle } from 'lucide-react';
 import { useLanguage } from '@/lib/i18n/LanguageProvider';
 
 export function Footer() {
@@ -31,8 +31,17 @@ export function Footer() {
             <div className="space-y-2 text-sm">
               <p className="flex items-start gap-2">
                 <MapPin size={14} className="mt-0.5 text-amber-500 shrink-0" />
-                #1A CTD, St. 484, Phum 3, Sangkat Phsar Daeum Thkov, Khan Chamkar Mon, Phnom Penh
+                84 J Street 430, Sangkat Tumnup Teuk, Khan Chamkar Mon, Phnom Penh 120102
               </p>
+              <a
+                href="https://www.google.com/maps?ll=11.547908,104.902909&z=13&t=m&hl=en-US&gl=US&mapclient=embed&cid=5058729923754564393"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 text-sm text-amber-400 hover:text-amber-300 transition-colors"
+              >
+                <ExternalLink size={12} />
+                {t('home.view_map')}
+              </a>
               <p className="flex items-center gap-2">
                 <Phone size={14} className="text-amber-500 shrink-0" />
                 {t('common.phone')}
@@ -49,6 +58,24 @@ export function Footer() {
               <Link href="/catalog" className="block hover:text-amber-400">{t('nav.catalog')}</Link>
               <Link href="/appointment" className="block hover:text-amber-400">{t('nav.appointments')}</Link>
               <Link href="/support" className="block hover:text-amber-400">{t('nav.support')}</Link>
+            </div>
+            <h4 className="font-semibold text-white mb-3 mt-6">Learn</h4>
+            <div className="space-y-2 text-sm">
+              <Link href="/learn/diamond-guide" className="block hover:text-amber-400">Diamond Guide</Link>
+              <Link href="/learn/gold-types" className="block hover:text-amber-400">Gold Types</Link>
+              <Link href="/learn/gemstone-guide" className="block hover:text-amber-400">Gemstone Guide</Link>
+            </div>
+            <h4 className="font-semibold text-white mb-3 mt-6">Social</h4>
+            <div className="flex gap-3">
+              <a href="https://facebook.com/ctdiamondjewelry" target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-amber-400 transition-colors rounded-full hover:bg-gray-800" aria-label="Facebook">
+                <Globe size={18} />
+              </a>
+              <a href="https://tiktok.com/@ctdiamondjewelry" target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-amber-400 transition-colors rounded-full hover:bg-gray-800" aria-label="TikTok">
+                <Music size={18} />
+              </a>
+              <a href="https://instagram.com/ctdiamondjewelry" target="_blank" rel="noopener noreferrer" className="p-2 text-gray-400 hover:text-amber-400 transition-colors rounded-full hover:bg-gray-800" aria-label="Instagram">
+                <MessageCircle size={18} />
+              </a>
             </div>
           </div>
         </div>

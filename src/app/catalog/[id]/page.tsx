@@ -1,133 +1,180 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import Image from 'next/image';
-import { Gem, ArrowLeft, ShoppingCart } from 'lucide-react';
-import { useLanguage } from '@/lib/i18n/LanguageProvider';
-import { useCartStore } from '@/lib/stores/cartStore';
-import { PriceBreakdown } from '@/components/product/PriceBreakdown';
-import { Badge } from '@/components/ui/Badge';
+import { Suspense } from 'react';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
+import { ArrowLeft, ChevronLeft, ChevronRight, ExternalLink, Gem, Heart, Share2 } from 'lucide-react';
+import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { Button } from '@/components/ui/Button';
 import { formatUSD } from '@/lib/utils/pricing';
-import { supabase } from '@/lib/supabase/client';
-import Link from 'next/link';
-import type { Product } from '@/lib/types';
+import { getProductById, getRelatedProducts, computeKhr } from '@/lib/supabase/catalog';
+import { ProductGallery } from './ProductGallery';
+import { ProductDetailClient } from './ProductDetailClient';
+import { RelatedProducts } from './RelatedProducts';
 
-export default function ProductDetailPage() {
-  const { id } = useParams();
-  const { t, lang } = useLanguage();
-  const [product, setProduct] = useState<Product | null>(null);
-  const [loading, setLoading] = useState(true);
-  const addItem = useCartStore((s) => s.addItem);
+interface PageProps {
+  params: Promise<{ id: string }>;
+}
 
-  useEffect(() => {
-    if (!id) return;
-    supabase
-      .from('products')
-      .select('*')
-      .eq('product_id', id)
-      .single()
-      .then(({ data, error }) => {
-        if (!error && data) setProduct(data as Product);
-        setLoading(false);
-      });
-  }, [id]);
-
-  if (loading) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center text-gray-500">
-        {t('common.loading')}
-      </div>
-    );
-  }
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { id } = await params;
+  const product = await getProductById(id);
 
   if (!product) {
-    return (
-      <div className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <p className="text-gray-400 mb-4">{t('common.error')}</p>
-        <Link href="/catalog">
-          <Button variant="outline">{t('common.retry')}</Button>
-        </Link>
-      </div>
-    );
+    return { title: 'Product Not Found | CT Diamond' };
   }
 
-  const title = product.title[lang] || product.title.en;
-  const category = product.category[lang] || product.category.en;
-  const isAvailable = product.stock_status === 'AVAILABLE';
+  return {
+    title: `${product.name} | CT Diamond`,
+    description: product.description || `Shop ${product.name} at CT Diamond Jewelry. ${product.carat_weight ? `${product.carat_weight}ct, ` : ''}${product.certification && product.certification !== 'none' ? `${product.certification} Certified.` : ''}`,
+    openGraph: {
+      title: `${product.name} | CT Diamond`,
+      description: product.description || undefined,
+      images: product.images?.[0] ? [{ url: product.images[0] }] : undefined,
+    },
+  };
+}
+
+export default async function ProductDetailPage({ params }: PageProps) {
+  const { id } = await params;
+  const product = await getProductById(id);
+
+  if (!product) {
+    notFound();
+  }
+
+  const related = await getRelatedProducts(product, 4);
+  const isCertified = product.certification && product.certification !== 'none';
+  const khrPrice = product.price_khr || computeKhr(product.price_usd);
+
+  const certLink = product.certification === 'GIA'
+    ? `https://www.gia.edu/report-check?reportno=${product.certificate_number}`
+    : product.certification === 'IGI'
+      ? `https://www.igi.org/verify/${product.certificate_number}`
+      : null;
+
+  const specs: Array<{ label: string; value: string }> = [
+    { label: 'Category', value: product.category.charAt(0).toUpperCase() + product.category.slice(1) },
+    { label: 'Material', value: product.material || '—' },
+    { label: 'Gold Type', value: product.gold_type ? product.gold_type.charAt(0).toUpperCase() + product.gold_type.slice(1) : '—' },
+    { label: 'Carat Weight', value: product.carat_weight ? `${product.carat_weight.toFixed(2)} ct` : '—' },
+    { label: 'Diamond Clarity', value: product.diamond_clarity || '—' },
+    { label: 'Diamond Color', value: product.diamond_color || '—' },
+  ];
 
   return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      <Link
-        href="/catalog"
-        className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-amber-700 mb-6"
-      >
-        <ArrowLeft size={16} /> {t('catalog.title')}
-      </Link>
+    <div className="min-h-screen bg-white">
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <Breadcrumbs
+          items={[
+            { label: 'Home', href: '/' },
+            { label: 'Catalog', href: '/catalog' },
+            { label: product.name },
+          ]}
+        />
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="aspect-square bg-gradient-to-br from-gray-50 to-amber-50 rounded-lg flex items-center justify-center border border-gray-100 relative overflow-hidden">
-          {product.images?.[0] ? (
-            <Image
-              src={product.images[0]}
-              alt={title}
-              fill
-              className="object-contain"
-              sizes="(max-width: 768px) 100vw, 50vw"
-              priority
-            />
-          ) : (
-            <Gem className="text-amber-300" size={80} />
-          )}
-        </div>
+        <Link
+          href="/catalog"
+          className="inline-flex items-center gap-1 text-sm text-gray-500 hover:text-amber-700 mb-6 transition-colors"
+        >
+          <ArrowLeft size={16} /> Back to Catalog
+        </Link>
 
-        <div>
-          <Badge variant={product.stock_status} className="mb-2">
-            {product.stock_status === 'AVAILABLE'
-              ? t('product.stock.available')
-              : product.stock_status === 'PENDING_PAYMENT'
-                ? t('product.stock.pending')
-                : t('product.stock.sold')}
-          </Badge>
-          <p className="text-xs text-amber-600 font-medium uppercase tracking-wider mb-1">
-            {category}
-          </p>
-          <h1 className="text-2xl font-serif font-bold text-gray-900 mb-2">{title}</h1>
-          <p className="text-sm text-gray-500 mb-1">
-            {t('product.sku')}: {product.product_sku}
-          </p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
+          {/* Gallery */}
+          <ProductGallery images={product.images} name={product.name} />
 
-          <p className="text-3xl font-bold text-amber-700 my-6">
-            {formatUSD(product.pricing.total_selling_usd)}
-          </p>
+          {/* Info */}
+          <div>
+            {isCertified && (
+              <div className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-semibold mb-3"
+                style={{
+                  backgroundColor: product.certification === 'GIA' ? '#1a3a5c' : '#8b1a1a',
+                  color: 'white',
+                }}
+              >
+                <Gem size={12} />
+                {product.certification} Certified
+                {certLink && (
+                  <a
+                    href={certLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-0.5 ml-1 underline opacity-80 hover:opacity-100"
+                  >
+                    Verify <ExternalLink size={10} />
+                  </a>
+                )}
+              </div>
+            )}
 
-          <PriceBreakdown pricing={product.pricing} />
+            <h1 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-2">
+              {product.name}
+            </h1>
 
-          <div className="mt-6 space-y-3">
-            {isAvailable ? (
-              <>
-                <Button
-                  className="w-full"
-                  size="lg"
-                  onClick={() => addItem(product)}
-                >
-                  <ShoppingCart size={18} className="mr-2" />
-                  {t('product.add_to_cart')}
-                </Button>
-                <Link href={`/checkout?product=${product.product_id}`}>
-                  <Button variant="outline" className="w-full" size="lg">
-                    {t('catalog.buy_now')}
-                  </Button>
-                </Link>
-              </>
-            ) : (
-              <p className="text-sm text-red-500 text-center py-3">
-                {t('product.not_available')}
+            {product.subcategory && (
+              <p className="text-sm text-amber-600 font-medium uppercase tracking-wider mb-4">
+                {product.subcategory}
               </p>
             )}
+
+            {product.description && (
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                {product.description}
+              </p>
+            )}
+
+            <div className="border-t border-gray-100 pt-6 mb-6">
+              <div className="flex items-baseline gap-3 mb-1">
+                <span className="text-3xl font-bold text-gray-900">
+                  {formatUSD(product.price_usd)}
+                </span>
+              </div>
+              <p className="text-sm text-gray-500">
+                ៛ {khrPrice.toLocaleString()}
+              </p>
+            </div>
+
+            <div className="space-y-3 mb-8">
+              <Link href={`/appointment?product=${encodeURIComponent(product.name)}`}>
+                <Button variant="primary" size="lg" className="w-full">
+                  Book a Consultation
+                </Button>
+              </Link>
+              <ProductDetailClient productName={product.name} />
+            </div>
+
+            {/* Specs table */}
+            <div className="border-t border-gray-100 pt-6">
+              <h2 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wider">
+                Specifications
+              </h2>
+              <div className="divide-y divide-gray-50">
+                {specs.map((spec) => (
+                  <div key={spec.label} className="flex items-center justify-between py-2">
+                    <span className="text-sm text-gray-500">{spec.label}</span>
+                    <span className="text-sm font-medium text-gray-900">{spec.value}</span>
+                  </div>
+                ))}
+              </div>
+
+              {product.certificate_number && (
+                <div className="mt-4 pt-4 border-t border-gray-100">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm text-gray-500">Certificate #</span>
+                    <span className="text-sm font-mono text-gray-900">{product.certificate_number}</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         </div>
+
+        {/* Related products */}
+        {related.length > 0 && (
+          <Suspense fallback={null}>
+            <RelatedProducts products={related} category={product.category} />
+          </Suspense>
+        )}
       </div>
     </div>
   );
